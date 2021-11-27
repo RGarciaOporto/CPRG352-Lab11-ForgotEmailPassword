@@ -1,8 +1,8 @@
 package services;
 
 import dataaccess.UserDB;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.User;
@@ -39,4 +39,25 @@ public class AccountService {
         
         return null;
     }
+    public void resetPassword(String email, String path, String url){
+        String uuid = UUID.randomUUID().toString();
+        String link = url + "?uuid=" + uuid;
+        UserDB userDB = new UserDB();
+        //now we generate the email
+         User user = userDB.get(email);
+         String to = user.getEmail();
+         String subject = "Notes App Reset Password";
+         String template = path + "/emailtemplates/reset.html";
+         
+         HashMap<String, String> tags = new HashMap<>();
+         tags.put("firstname", user.getFirstName());
+         tags.put("lastname", user.getLastName());
+         tags.put("link", link);
+         // send email
+        try {
+            GmailService.sendMail(to, subject, template, tags);
+        } catch (Exception ex) {
+            Logger.getLogger(AccountService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          } 
 }
