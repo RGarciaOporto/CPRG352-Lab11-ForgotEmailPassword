@@ -20,6 +20,7 @@ public class UserDB {
     
     public List<User> getAll() throws Exception {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        
         try {
             List<User> users = em.createNamedQuery("User.findAll", 
                 User.class).getResultList();
@@ -32,10 +33,14 @@ public class UserDB {
     
       public User getByUUID(String resetPasswordUUID) throws Exception {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        
         try {
-            User user;
+            User user = null;
             List<User> users = getAll();
-            user = users.get(2);
+            for(int i = 0; i < users.size(); i++){
+                if(users.get(i).getResetPasswordUuid() != null)
+                    user = users.get(i);
+            }
             return user;
         } finally {
             em.close();

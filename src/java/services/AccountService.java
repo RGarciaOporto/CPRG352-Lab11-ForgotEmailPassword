@@ -66,7 +66,7 @@ public class AccountService {
     public boolean changePassword(String uuid, String password) {
        UserDB userDB = new UserDB();
         try {
-            User user = userDB.get(uuid);
+            User user = userDB.getByUUID(uuid);
             user.setPassword(password);
             user.setResetPasswordUuid(null);
             userDB.update(user);
