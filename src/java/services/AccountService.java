@@ -45,6 +45,8 @@ public class AccountService {
         UserDB userDB = new UserDB();
         //now we generate the email
          User user = userDB.get(email);
+         user.setResetPasswordUuid(uuid);
+         userDB.update(user);
          String to = user.getEmail();
          String subject = "Notes App Reset Password";
          String template = path + "/emailtemplates/reset.html";
@@ -60,4 +62,17 @@ public class AccountService {
             Logger.getLogger(AccountService.class.getName()).log(Level.SEVERE, null, ex);
         }
           } 
+    
+    public boolean changePassword(String uuid, String password) {
+       UserDB userDB = new UserDB();
+        try {
+            User user = userDB.get(uuid);
+            user.setPassword(password);
+            user.setResetPasswordUuid(null);
+            userDB.update(user);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
 }

@@ -15,9 +15,11 @@
         <h1>Reset Password</h1>
         <p>Please enter your email address to reset your password.</p>
         <form action="reset" method="post">
+            <input  type="hidden" name="resetPassword" value ="sendEmail">
         <label>Email Address: </label>
         <input type="text" name="emailAddress">
         <input type="submit" value ="submit">
         </form>
+        <p>${message}</p>
     </body>
 </html>

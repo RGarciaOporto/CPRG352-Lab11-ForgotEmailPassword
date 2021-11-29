@@ -32,14 +32,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
     , @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")
+    , @NamedQuery(name = "User.findByResetPasswordUUID", query = "SELECT u FROM User u WHERE u.resetPasswordUuid = :resetPasswordUuid")
     , @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active")
     , @NamedQuery(name = "User.findByFirstName", query = "SELECT u FROM User u WHERE u.firstName = :firstName")
     , @NamedQuery(name = "User.findByLastName", query = "SELECT u FROM User u WHERE u.lastName = :lastName")
     , @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")})
 public class User implements Serializable {
 
-    @Column(name = "reset_password_uuid")
-    private String resetPasswordUuid;
+    
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -63,7 +63,9 @@ public class User implements Serializable {
     @JoinColumn(name = "role", referencedColumnName = "role_id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Role role;
-
+    @Column(name = "reset_password_uuid")
+    private String resetPasswordUuid;
+    
     public User() {
     }
 
@@ -71,12 +73,13 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public User(String email, boolean active, String firstName, String lastName, String password) {
+    public User(String email, boolean active, String firstName, String lastName, String password, String resetPasswordUuid) {
         this.email = email;
         this.active = active;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+        this.resetPasswordUuid = resetPasswordUuid;
     }
 
     public String getEmail() {
